@@ -33,7 +33,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest ruff black
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
       - name: Run linter (ruff)
         run: |
@@ -46,3 +46,10 @@ jobs:
       - name: Run tests
         run: |
           pytest -q
+        env:
+          SECRET_KEY: test-secret
+          JWT_SECRET_KEY: test-jwt-secret
+          MAX_FILE_SIZE_MB: "10"
+          ALLOWED_MIME_PREFIXES: "image/"
+          ALLOWED_MIME_FULL: "image/png"
+          REPORT_ALLOWED_MIME_FULL: "application/pdf"
